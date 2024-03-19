@@ -1,0 +1,179 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+class PerfilMedico {
+private:
+    string primerNombre;
+    string apellido;
+    char sexo;
+    int diaNacimiento;
+    int mesNacimiento;
+    int anioNacimiento;
+    int altura; // en centímetros
+    double peso; // en kilogramos
+
+public:
+    // Constructor que recibe los datos
+    PerfilMedico(string nombre, string apellido, char sexo, int dia, int mes, int anio, int altura, double peso)
+        : primerNombre(nombre), apellido(apellido), sexo(sexo), diaNacimiento(dia), mesNacimiento(mes),
+          anioNacimiento(anio), altura(altura), peso(peso) {}
+
+    // Funciones de establecer y obtener para cada atributo
+    void setPrimerNombre(string nombre) {
+        primerNombre = nombre;
+    }
+
+    string getPrimerNombre() const {
+        return primerNombre;
+    }
+
+    void setApellido(string apell) {
+        apellido = apell;
+    }
+
+    string getApellido() const {
+        return apellido;
+    }
+
+    void setSexo(char sx) {
+        sexo = sx;
+    }
+
+    char getSexo() const {
+        return sexo;
+    }
+
+    void setDiaNacimiento(int dia) {
+        diaNacimiento = dia;
+    }
+
+    int getDiaNacimiento() const {
+        return diaNacimiento;
+    }
+
+    void setMesNacimiento(int mes) {
+        mesNacimiento = mes;
+    }
+
+    int getMesNacimiento() const {
+        return mesNacimiento;
+    }
+
+    void setAnioNacimiento(int anio) {
+        anioNacimiento = anio;
+    }
+
+    int getAnioNacimiento() const {
+        return anioNacimiento;
+    }
+
+    void setAltura(int alt) {
+        altura = alt;
+    }
+
+    int getAltura() const {
+        return altura;
+    }
+
+    void setPeso(double p) {
+        peso = p;
+    }
+
+    double getPeso() const {
+        return peso;
+    }
+
+    // Función para calcular la edad en años
+    int calcularEdad() const {
+        // Obtener la fecha actual
+        int diaActual, mesActual, anioActual;
+        cout << "Ingrese la fecha actual (dia mes anio): ";
+        cin >> diaActual >> mesActual >> anioActual;
+
+        // Calcular la edad
+        int edad = anioActual - anioNacimiento;
+        if (mesActual < mesNacimiento || (mesActual == mesNacimiento && diaActual < diaNacimiento)) {
+            edad--;
+        }
+        return edad;
+    }
+
+    // Función para calcular el índice de masa corporal (BMI)
+    double calcularBMI() const {
+        return (peso * 10000) / (altura * altura); // BMI = peso (kg) / altura^2 (m^2)
+    }
+
+    // Función para calcular la frecuencia cardíaca máxima
+    int calcularFrecuenciaCardiacaMaxima() const {
+        return 220 - calcularEdad(); // FCM = 220 - edad
+    }
+
+    // Función para calcular el rango de frecuencia cardíaca esperada
+    void calcularRangoFrecuenciaCardiacaEsperada(int& minimo, int& maximo) const {
+        int frecuenciaMaxima = calcularFrecuenciaCardiacaMaxima();
+        minimo = frecuenciaMaxima * 0.5;
+        maximo = frecuenciaMaxima * 0.85;
+    }
+};
+
+int main() {
+    // Solicitar información sobre la persona
+    string nombre, apellido;
+    char sexo;
+    int diaNacimiento, mesNacimiento, anioNacimiento, altura;
+    double peso;
+
+    cout << "Ingrese el primer nombre: ";
+    cin >> nombre;
+    cout << "Ingrese el apellido: ";
+    cin >> apellido;
+    cout << "Ingrese el sexo (M/F): ";
+    cin >> sexo;
+    cout << "Ingrese la fecha de nacimiento (dia mes anio): ";
+    cin >> diaNacimiento >> mesNacimiento >> anioNacimiento;
+    cout << "Ingrese la altura (en centimetros): ";
+    cin >> altura;
+    cout << "Ingrese el peso (en kilogramos): ";
+    cin >> peso;
+
+    // Crear un objeto de tipo PerfilMedico
+    PerfilMedico perfil(nombre, apellido, sexo, diaNacimiento, mesNacimiento, anioNacimiento, altura, peso);
+
+    // Imprimir información sobre la persona
+    cout << "\nInformacion de la persona:" << endl;
+    cout << "Nombre: " << perfil.getPrimerNombre() << " " << perfil.getApellido() << endl;
+    cout << "Sexo: " << perfil.getSexo() << endl;
+    cout << "Fecha de nacimiento: " << perfil.getDiaNacimiento() << "/" << perfil.getMesNacimiento() << "/"
+         << perfil.getAnioNacimiento() << endl;
+    cout << "Altura: " << perfil.getAltura() << " cm" << endl;
+    cout << "Peso: " << perfil.getPeso() << " kg" << endl;
+
+    // Calcular y mostrar la edad en años
+    int edad = perfil.calcularEdad();
+    cout << "\nEdad: " << edad << " anios" << endl;
+
+    // Calcular y mostrar el índice de masa corporal (BMI)
+    double bmi = perfil.calcularBMI();
+    cout << "Indice de Masa Corporal (BMI): " << bmi << endl;
+
+    // Calcular y mostrar la frecuencia cardíaca máxima
+    int frecuenciaMaxima = perfil.calcularFrecuenciaCardiacaMaxima();
+    cout << "Frecuencia Cardiaca Máxima: " << frecuenciaMaxima << " latidos por minuto" << endl;
+
+    // Calcular y mostrar el rango de frecuencia cardíaca esperada
+    int minimo, maximo;
+    perfil.calcularRangoFrecuenciaCardiacaEsperada(minimo, maximo);
+    cout << "Rango de Frecuencia Cardíaca Esperada: " << minimo << " - " << maximo << " latidos por minuto" << endl;
+
+    // Mostrar valores del BMI
+    cout << "\nValores del BMI:" << endl;
+    cout << "Bajo peso: Menos de 18.5" << endl;
+    cout << "Normal: 18.5 – 24.9" << endl;
+    cout << "Sobrepeso: 25 – 29.9" << endl;
+    cout << "Obesidad: 30 o mas" << endl;
+
+    return 0;
+}
